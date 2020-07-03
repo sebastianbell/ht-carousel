@@ -17,7 +17,7 @@
 <script>
 // Image URLs endpoint.
 const endPointUrl =
-  "https://run.mocky.io/v3/6d1e82b6-26e3-4c12-951b-fadbf008cff4";
+  "https://run.mocky.io/v3/c5d6233d-84f9-40b7-9801-f4dbd398eceb";
 // The array of image URLs, intit with a placeholder.
 let imageUrls = [
   "https://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif",
@@ -35,10 +35,15 @@ export default {
   methods: {
     fetchImageUrls: function() {
       // Using axios, see main.js.
-      this.$http.get(endPointUrl).then((result) => {
-        this.imageUrls = result.data;
-        this.mainImageUrl = result.data[0];
-      });
+      this.$http
+        .get(endPointUrl)
+        .then((result) => {
+          this.imageUrls = result.data.images;
+          this.mainImageUrl = result.data.images[0];
+        })
+        .catch((error) => {
+          window.console.log(error.response);
+        });
     },
     updateImage: function(event) {
       if (event) {

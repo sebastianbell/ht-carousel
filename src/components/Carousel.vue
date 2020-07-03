@@ -15,25 +15,31 @@
 </template>
 
 <script>
-const imageUrls = [
-  "https://upload.wikimedia.org/wikipedia/commons/6/6e/A_Song_Bird_%28177187493%29.jpeg",
-  "https://upload.wikimedia.org/wikipedia/commons/4/4a/19-06-170-carter.jpg",
-  "https://upload.wikimedia.org/wikipedia/commons/d/da/Dog-shaking-itself.jpg",
-  "https://upload.wikimedia.org/wikipedia/commons/d/de/Chicken_from_Venezuela.jpg",
-  "https://upload.wikimedia.org/wikipedia/commons/4/47/Raccoon_on_Log.jpg",
-  "https://upload.wikimedia.org/wikipedia/commons/9/95/Testudohermanni.jpg",
-  "https://upload.wikimedia.org/wikipedia/commons/8/8d/Squirrel_holding_nut.jpg",
+// Image URLs endpoint.
+const endPointUrl =
+  "https://run.mocky.io/v3/6d1e82b6-26e3-4c12-951b-fadbf008cff4";
+// The array of image URLs, intit with a placeholder.
+let imageUrls = [
+  "https://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif",
 ];
 
 export default {
   name: "Carousel",
   data() {
+    this.fetchImageUrls();
     return {
       mainImageUrl: imageUrls[0],
       imageUrls,
     };
   },
   methods: {
+    fetchImageUrls: function() {
+      // Using axios, see main.js.
+      this.$http.get(endPointUrl).then((result) => {
+        this.imageUrls = result.data;
+        this.mainImageUrl = result.data[0];
+      });
+    },
     updateImage: function(event) {
       if (event) {
         this.mainImageUrl = event.target.src;

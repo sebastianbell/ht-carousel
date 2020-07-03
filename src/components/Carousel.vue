@@ -54,9 +54,8 @@ export default {
     updateImage: function(event) {
       if (event) {
         this.mainImageUrl = event.target.src;
-        this.imageIndex = event.target.getAttribute("data-index");
-        // console.log(this.imageIndex);
-        // console.log(event.target);
+        this.imageIndex = parseInt(event.target.getAttribute("data-index"));
+        console.log(this.imageIndex);
       }
     },
     prevImage: function(event) {
@@ -65,7 +64,7 @@ export default {
         this.mainImageUrl = this.imageUrls[this.imageIndex];
         console.log(this.imageIndex);
       } else {
-        // console.log("nope!");
+        console.log("nope!");
       }
     },
     nextImage: function(event) {
@@ -74,7 +73,7 @@ export default {
         this.mainImageUrl = this.imageUrls[this.imageIndex];
         console.log(this.imageIndex);
       } else {
-        // console.log("nope!");
+        console.log("nope!");
       }
     },
   },

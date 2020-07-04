@@ -52,32 +52,32 @@ export default {
         });
     },
     updateImage: function(event) {
-      if (event) {
-        this.mainImageUrl = event.target.src;
-        this.imageIndex = parseInt(event.target.getAttribute("data-index"));
-        this.scrollStrip();
-      }
+      this.mainImageUrl = event.target.src;
+      this.imageIndex = parseInt(event.target.getAttribute("data-index"));
+      this.scrollStrip();
     },
-    prevImage: function(event) {
-      if (event && this.imageIndex > 0) {
+    prevImage: function() {
+      if (this.imageIndex > 0) {
         this.imageIndex -= 1;
         this.mainImageUrl = this.imageUrls[this.imageIndex];
-        this.scrollStrip();
       } else {
-        // console.log("nope!");
+        this.imageIndex = this.imagesLength - 1;
+        this.mainImageUrl = this.imageUrls[this.imagesLength - 1];
       }
+      this.scrollStrip();
     },
-    nextImage: function(event) {
-      if (event && this.imagesLength - 1 > this.imageIndex) {
+    nextImage: function() {
+      if (this.imagesLength - 1 > this.imageIndex) {
         this.imageIndex += 1;
         this.mainImageUrl = this.imageUrls[this.imageIndex];
-        this.scrollStrip();
       } else {
-        // console.log("nope!");
+        this.imageIndex = 0;
+        this.mainImageUrl = this.imageUrls[0];
       }
+      this.scrollStrip();
     },
     scrollStrip: function() {
-      const strip = document.querySelector(".control-strip");
+      const strip = document.querySelector(".carousel > .control-strip");
       const width = strip.querySelector("img").offsetWidth;
       strip.scrollTo({
         top: 0,

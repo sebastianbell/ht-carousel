@@ -15,8 +15,8 @@ export default {
 };
 </script>
 
-<style>
-/* Reset */
+<style lang="scss">
+// Reset
 html {
   box-sizing: border-box;
   font-size: 16px;

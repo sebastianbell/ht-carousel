@@ -5,7 +5,7 @@
       <div class="arrow prev" v-on:click="prevImage"></div>
       <div class="arrow next" v-on:click="nextImage"></div>
     </div>
-    <div class="control-strip">
+    <div class="control-strip strip-init">
       <img
         v-for="(url, index) in imageUrls"
         :src="url"
@@ -39,7 +39,6 @@ export default {
   },
   mounted() {
     window.addEventListener("load", () => {
-      this.initUi();
       document.addEventListener("keydown", (event) => {
         switch (event.key) {
           case "ArrowLeft":
@@ -65,12 +64,6 @@ export default {
         .catch((error) => {
           window.console.error(error.response);
         });
-    },
-    initUi: function() {
-      const firstStripImage = document.querySelector(
-        ".carousel > .control-strip > img"
-      );
-      firstStripImage.classList.add("strip-selected");
     },
     updateImage: function(event) {
       this.mainImageUrl = event.target.src;
@@ -105,6 +98,7 @@ export default {
       );
       const width = strip.querySelector("img").offsetWidth;
 
+      strip.classList.remove("strip-init");
       images.forEach((element) => {
         element.classList.remove("strip-selected");
       });
@@ -119,9 +113,17 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+// Colors
+$dark: #333;
+$medium: #666;
+$light: #eee;
+
+// Assets
+$asset-path: "../assets";
+
 .carousel {
-  background: #333;
+  background: $dark;
 }
 
 .main-image {
@@ -130,14 +132,14 @@ export default {
   height: 80vh;
   justify-content: center;
   position: relative;
-}
-
-.main-image > img {
-  max-height: 80vh;
+  img {
+    border: 1px solid black;
+    max-height: 80vh;
+  }
 }
 
 .arrow {
-  background-image: url(../assets/arrow.svg);
+  background-image: url(#{$asset-path}/arrow.svg);
   background-size: contain;
   background-repeat: no-repeat;
   cursor: pointer;
@@ -145,38 +147,35 @@ export default {
   opacity: 0.3;
   position: absolute;
   width: 100px;
-}
-
-.arrow:hover {
-  opacity: 0.5;
-}
-
-.arrow.prev {
-  left: 0;
-  transform: scale(-1, 1);
-}
-
-.arrow.next {
-  right: 0;
+  &:hover {
+    opacity: 0.5;
+  }
+  &.arrow.prev {
+    left: 0;
+    transform: scale(-1, 1);
+  }
+  &.arrow.next {
+    right: 0;
+  }
 }
 
 .control-strip {
   display: flex;
   overflow-x: scroll;
-}
-
-.control-strip::-webkit-scrollbar {
-  display: none;
-}
-
-.control-strip > img {
-  border: 2px solid transparent;
-  cursor: pointer;
-  height: 20vh;
-}
-
-.control-strip > img:hover,
-.control-strip > img.strip-selected {
-  border-color: #eee;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+  img {
+    border: 2px solid $medium;
+    cursor: pointer;
+    height: 20vh;
+    &:hover,
+    &.strip-selected {
+      border-color: $light;
+    }
+  }
+  &.strip-init > img:first-child {
+    border-color: $light;
+  }
 }
 </style>

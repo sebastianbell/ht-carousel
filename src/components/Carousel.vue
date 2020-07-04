@@ -18,44 +18,39 @@
 </template>
 
 <script>
-// Image URLs endpoint.
-const endpointUrl =
-  "https://run.mocky.io/v3/c5d6233d-84f9-40b7-9801-f4dbd398eceb";
-// Array of image URLs, intit with a placeholder or default images.
-const placeholderImageUrls = [
-  "https://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif",
-];
+const carouselConfig = {
+  // Image URLs endpoint.
+  endpointUrl: "https://run.mocky.io/v3/c5d6233d-84f9-40b7-9801-f4dbd398eceb",
+  // Array of image URLs, intit with a placeholder or default images.
+  placeholderImageUrls: [
+    "https://upload.wikimedia.org/wikipedia/commons/c/ce/Transparent.gif",
+  ],
+};
 
 export default {
   name: "Carousel",
   data() {
     this.fetchImageUrls();
     return {
-      imageUrls: placeholderImageUrls,
-      imagesLength: placeholderImageUrls.length,
-      mainImageUrl: placeholderImageUrls[0],
+      imageUrls: carouselConfig.placeholderImageUrls,
+      imagesLength: carouselConfig.placeholderImageUrls.length,
+      mainImageUrl: carouselConfig.placeholderImageUrls[0],
       imageIndex: 0,
     };
   },
   mounted() {
-    window.addEventListener("load", () => {
-      document.addEventListener("keydown", (event) => {
-        switch (event.key) {
-          case "ArrowLeft":
-            this.prevImage();
-            break;
-          case "ArrowRight":
-            this.nextImage();
-            break;
-        }
-      });
-    });
+    document.onreadystatechange = () => {
+      if (document.readyState === "complete") {
+        // DOM ready.
+        this.keyboardShortcuts();
+      }
+    };
   },
   methods: {
     fetchImageUrls: function() {
       // Using axios, see main.js.
       this.$http
-        .get(endpointUrl)
+        .get(carouselConfig.endpointUrl)
         .then((result) => {
           this.imageUrls = result.data.images;
           this.imagesLength = this.imageUrls.length;
@@ -107,6 +102,18 @@ export default {
         top: 0,
         left: width * this.imageIndex,
         behavior: "smooth",
+      });
+    },
+    keyboardShortcuts: function() {
+      document.addEventListener("keydown", (event) => {
+        switch (event.key) {
+          case "ArrowLeft":
+            this.prevImage();
+            break;
+          case "ArrowRight":
+            this.nextImage();
+            break;
+        }
       });
     },
   },

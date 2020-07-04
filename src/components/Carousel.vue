@@ -19,7 +19,7 @@
 
 <script>
 // Image URLs endpoint.
-const endPointUrl =
+const endpointUrl =
   "https://run.mocky.io/v3/c5d6233d-84f9-40b7-9801-f4dbd398eceb";
 // Array of image URLs, intit with a placeholder or default images.
 const placeholderImageUrls = [
@@ -37,11 +37,16 @@ export default {
       imageIndex: 0,
     };
   },
+  mounted() {
+    window.addEventListener("load", () => {
+      this.initUi();
+    });
+  },
   methods: {
     fetchImageUrls: function() {
       // Using axios, see main.js.
       this.$http
-        .get(endPointUrl)
+        .get(endpointUrl)
         .then((result) => {
           this.imageUrls = result.data.images;
           this.imagesLength = this.imageUrls.length;
@@ -50,6 +55,12 @@ export default {
         .catch((error) => {
           window.console.error(error.response);
         });
+    },
+    initUi: function() {
+      const firstStripImage = document.querySelector(
+        ".carousel > .control-strip > img"
+      );
+      firstStripImage.classList.add("strip-selected");
     },
     updateImage: function(event) {
       this.mainImageUrl = event.target.src;
@@ -78,7 +89,16 @@ export default {
     },
     scrollStrip: function() {
       const strip = document.querySelector(".carousel > .control-strip");
+      const images = strip.querySelectorAll("img");
+      const selected = strip.querySelector(
+        `img[data-index='${this.imageIndex}']`
+      );
       const width = strip.querySelector("img").offsetWidth;
+
+      images.forEach((element) => {
+        element.classList.remove("strip-selected");
+      });
+      selected.classList.add("strip-selected");
       strip.scrollTo({
         top: 0,
         left: width * this.imageIndex,
@@ -106,7 +126,7 @@ export default {
   max-height: 80vh;
 }
 
-.main-image > .arrow {
+.arrow {
   background-image: url(../assets/arrow.svg);
   background-size: contain;
   background-repeat: no-repeat;
@@ -117,16 +137,16 @@ export default {
   width: 100px;
 }
 
-.main-image > .arrow:hover {
+.arrow:hover {
   opacity: 0.5;
 }
 
-.main-image > .arrow.prev {
+.arrow.prev {
   left: 0;
   transform: scale(-1, 1);
 }
 
-.main-image > .arrow.next {
+.arrow.next {
   right: 0;
 }
 
@@ -140,7 +160,13 @@ export default {
 }
 
 .control-strip > img {
+  border: 2px solid transparent;
   cursor: pointer;
   height: 20vh;
+}
+
+.control-strip > img:hover,
+.control-strip > img.strip-selected {
+  border-color: #eee;
 }
 </style>

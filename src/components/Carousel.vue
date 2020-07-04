@@ -40,6 +40,16 @@ export default {
   mounted() {
     window.addEventListener("load", () => {
       this.initUi();
+      document.addEventListener("keydown", (event) => {
+        switch (event.key) {
+          case "ArrowLeft":
+            this.prevImage();
+            break;
+          case "ArrowRight":
+            this.nextImage();
+            break;
+        }
+      });
     });
   },
   methods: {

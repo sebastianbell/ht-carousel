@@ -55,26 +55,35 @@ export default {
       if (event) {
         this.mainImageUrl = event.target.src;
         this.imageIndex = parseInt(event.target.getAttribute("data-index"));
-        console.log(this.imageIndex);
+        this.scrollStrip();
       }
     },
     prevImage: function(event) {
       if (event && this.imageIndex > 0) {
         this.imageIndex -= 1;
         this.mainImageUrl = this.imageUrls[this.imageIndex];
-        console.log(this.imageIndex);
+        this.scrollStrip();
       } else {
-        console.log("nope!");
+        // console.log("nope!");
       }
     },
     nextImage: function(event) {
       if (event && this.imagesLength - 1 > this.imageIndex) {
         this.imageIndex += 1;
         this.mainImageUrl = this.imageUrls[this.imageIndex];
-        console.log(this.imageIndex);
+        this.scrollStrip();
       } else {
-        console.log("nope!");
+        // console.log("nope!");
       }
+    },
+    scrollStrip: function() {
+      const strip = document.querySelector(".control-strip");
+      const width = strip.querySelector("img").offsetWidth;
+      strip.scrollTo({
+        top: 0,
+        left: width * this.imageIndex,
+        behavior: "smooth",
+      });
     },
   },
 };
@@ -123,7 +132,7 @@ export default {
 
 .control-strip {
   display: flex;
-  overflow-x: auto;
+  overflow-x: scroll;
 }
 
 .control-strip::-webkit-scrollbar {

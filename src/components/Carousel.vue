@@ -2,8 +2,9 @@
   <section class="carousel">
     <div class="main-image">
       <img :src="mainImageUrl" />
-      <div class="arrow prev" v-on:click="prevImage"></div>
-      <div class="arrow next" v-on:click="nextImage"></div>
+      <div class="icon-arrow prev" v-on:click="prevImage"></div>
+      <div class="icon-arrow next" v-on:click="nextImage"></div>
+      <div class="icon-fullscreen" v-on:click="toggleFullscreen"></div>
     </div>
     <div class="control-strip strip-init">
       <img
@@ -106,6 +107,11 @@ export default {
         behavior: "smooth",
       });
     },
+    toggleFullscreen: function() {
+      const container = document.querySelector(".carousel");
+      container.classList.toggle("strip-hide");
+      this.scrollStrip();
+    },
     keyboardShortcuts: function() {
       // Arrow keys.
       document.addEventListener("keydown", (event) => {
@@ -115,6 +121,9 @@ export default {
             break;
           case "ArrowRight":
             this.nextImage();
+            break;
+          case "Escape":
+            this.toggleFullscreen();
             break;
         }
       });
@@ -131,14 +140,28 @@ $light: #eee;
 // Assets
 $asset-path: "../assets";
 
+// Opacity
+$opacity: 0.3;
+$opacity-hover: 0.5;
+
+// NOTE: Keep selector properties in alphbetical order :)
 .carousel {
   background: $dark;
+  display: flex;
+  flex-flow: column;
+  height: 100vh;
+  &.strip-hide .main-image img {
+    max-height: 100vh;
+  }
+  &.strip-hide .control-strip {
+    display: none;
+  }
 }
 
 .main-image {
   align-items: center;
   display: flex;
-  height: 80vh;
+  flex: 1;
   justify-content: center;
   position: relative;
   img {
@@ -147,29 +170,46 @@ $asset-path: "../assets";
   }
 }
 
-.arrow {
-  background-image: url(#{$asset-path}/arrow.svg);
-  background-size: contain;
+.icon-arrow {
+  background-image: url(#{$asset-path}/icon-arrow.svg);
   background-repeat: no-repeat;
+  background-size: contain;
   cursor: pointer;
-  height: 100px;
-  opacity: 0.3;
+  height: 7rem;
+  opacity: $opacity;
   position: absolute;
-  width: 100px;
+  width: 7rem;
   &:hover {
-    opacity: 0.5;
+    opacity: $opacity-hover;
   }
-  &.arrow.prev {
+  &.prev {
     left: 0;
     transform: scale(-1, 1);
   }
-  &.arrow.next {
+  &.next {
     right: 0;
+  }
+}
+
+.icon-fullscreen {
+  background-image: url(#{$asset-path}/icon-fullscreen.svg);
+  background-repeat: no-repeat;
+  background-size: contain;
+  bottom: 1rem;
+  cursor: pointer;
+  height: 3rem;
+  opacity: $opacity;
+  position: absolute;
+  right: 1rem;
+  width: 3rem;
+  &:hover {
+    opacity: $opacity-hover;
   }
 }
 
 .control-strip {
   display: flex;
+  height: 20%;
   overflow-x: scroll;
   &::-webkit-scrollbar {
     display: none;
@@ -177,7 +217,7 @@ $asset-path: "../assets";
   img {
     border: 2px solid transparent;
     cursor: pointer;
-    height: 20vh;
+    height: 100%;
     &:hover,
     &.strip-selected {
       border-color: $light;

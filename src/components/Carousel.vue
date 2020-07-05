@@ -1,10 +1,19 @@
 <template>
   <section class="carousel">
     <div class="main-image">
-      <img :src="mainImageUrl" />
+      <img :src="mainImageUrl" alt="Main Image" />
       <div class="icon arrow prev" v-on:click="prevImage"></div>
       <div class="icon arrow next" v-on:click="nextImage"></div>
-      <div class="icon fullscreen" v-on:click="toggleFullscreen"></div>
+      <div
+        class="icon download"
+        title="Download Image"
+        v-on:click="downloadImage"
+      ></div>
+      <div
+        class="icon expanded"
+        title="Expand View"
+        v-on:click="toggleExpanded"
+      ></div>
     </div>
     <div class="control-strip strip-init">
       <img
@@ -13,6 +22,7 @@
         :key="url"
         :data-index="index"
         v-on:click="updateImage"
+        alt="Thumbnail Image"
       />
     </div>
   </section>
@@ -48,7 +58,7 @@ export default {
     };
   },
   methods: {
-    fetchImageUrls: function() {
+    fetchImageUrls() {
       // Using axios, see main.js.
       this.$http
         .get(carouselConfig.endpointUrl)
@@ -58,15 +68,15 @@ export default {
           this.mainImageUrl = result.data.images[0];
         })
         .catch((error) => {
-          window.console.error(error.response);
+          window.console.error(error);
         });
     },
-    updateImage: function(event) {
+    updateImage(event) {
       this.mainImageUrl = event.target.src;
       this.imageIndex = parseInt(event.target.getAttribute("data-index"));
       this.scrollStrip();
     },
-    prevImage: function() {
+    prevImage() {
       if (this.imageIndex > 0) {
         this.imageIndex -= 1;
         this.mainImageUrl = this.imageUrls[this.imageIndex];
@@ -76,7 +86,7 @@ export default {
       }
       this.scrollStrip();
     },
-    nextImage: function() {
+    nextImage() {
       if (this.imagesLength - 1 > this.imageIndex) {
         this.imageIndex += 1;
         this.mainImageUrl = this.imageUrls[this.imageIndex];
@@ -86,7 +96,7 @@ export default {
       }
       this.scrollStrip();
     },
-    scrollStrip: function() {
+    scrollStrip() {
       const strip = document.querySelector(".carousel > .control-strip");
       const images = strip.querySelectorAll("img");
       const selected = strip.querySelector(
@@ -107,12 +117,34 @@ export default {
         behavior: "smooth",
       });
     },
-    toggleFullscreen: function() {
+    toggleExpanded() {
       const container = document.querySelector(".carousel");
       container.classList.toggle("strip-hide");
       this.scrollStrip();
     },
-    keyboardShortcuts: function() {
+    downloadImage() {
+      // Using axios, see main.js.
+      this.$http({
+        method: "get",
+        url: this.mainImageUrl,
+        responseType: "arraybuffer",
+      })
+        .then((response) => {
+          this.forceFileDownload(response);
+        })
+        .catch((error) => {
+          window.console.error(error);
+        });
+    },
+    forceFileDownload(response) {
+      const url = window.URL.createObjectURL(new Blob([response.data]));
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", "image.jpg");
+      document.body.appendChild(link);
+      link.click();
+    },
+    keyboardShortcuts() {
       // Arrow keys.
       document.addEventListener("keydown", (event) => {
         switch (event.key) {
@@ -123,7 +155,7 @@ export default {
             this.nextImage();
             break;
           case "Escape":
-            this.toggleFullscreen();
+            this.toggleExpanded();
             break;
         }
       });
@@ -198,11 +230,18 @@ $drop-shadow-hover: drop-shadow(0 0 7px rgba(255, 255, 255, 0.9));
       right: 0;
     }
   }
-  &.fullscreen {
-    background-image: url(#{$asset-path}/icon-fullscreen.svg);
+  &.expanded {
+    background-image: url(#{$asset-path}/icon-expanded.svg);
     bottom: 1rem;
     height: 3rem;
     right: 1rem;
+    width: 3rem;
+  }
+  &.download {
+    background-image: url(#{$asset-path}/icon-download.svg);
+    left: 1rem;
+    bottom: 1rem;
+    height: 3rem;
     width: 3rem;
   }
 }

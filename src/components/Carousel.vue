@@ -91,20 +91,23 @@ export default {
       const selected = strip.querySelector(
         `img[data-index='${this.imageIndex}']`
       );
-      const width = strip.querySelector("img").offsetWidth;
 
+      // Remove the intial placeholder image border.
       strip.classList.remove("strip-init");
+      // Remove all image borders.
       images.forEach((element) => {
         element.classList.remove("strip-selected");
       });
+      // Add border to selected strip image.
       selected.classList.add("strip-selected");
+      // Scrolls the strip left to the selected strip image, when possible.
       strip.scrollTo({
-        top: 0,
-        left: width * this.imageIndex,
+        left: selected.offsetLeft,
         behavior: "smooth",
       });
     },
     keyboardShortcuts: function() {
+      // Arrow keys.
       document.addEventListener("keydown", (event) => {
         switch (event.key) {
           case "ArrowLeft":
@@ -123,7 +126,6 @@ export default {
 <style lang="scss" scoped>
 // Colors
 $dark: #333;
-$medium: #666;
 $light: #eee;
 
 // Assets
@@ -173,7 +175,7 @@ $asset-path: "../assets";
     display: none;
   }
   img {
-    border: 2px solid $medium;
+    border: 2px solid transparent;
     cursor: pointer;
     height: 20vh;
     &:hover,

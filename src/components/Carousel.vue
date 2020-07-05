@@ -2,9 +2,9 @@
   <section class="carousel">
     <div class="main-image">
       <img :src="mainImageUrl" />
-      <div class="icon-arrow prev" v-on:click="prevImage"></div>
-      <div class="icon-arrow next" v-on:click="nextImage"></div>
-      <div class="icon-fullscreen" v-on:click="toggleFullscreen"></div>
+      <div class="icon arrow prev" v-on:click="prevImage"></div>
+      <div class="icon arrow next" v-on:click="nextImage"></div>
+      <div class="icon fullscreen" v-on:click="toggleFullscreen"></div>
     </div>
     <div class="control-strip strip-init">
       <img
@@ -144,6 +144,10 @@ $asset-path: "../assets";
 $opacity: 0.3;
 $opacity-hover: 0.5;
 
+// Drop shadow
+$drop-shadow: drop-shadow(3px 3px 2px rgba(0, 0, 0, 0.7));
+$drop-shadow-hover: drop-shadow(0 0 7px rgba(255, 255, 255, 0.9));
+
 // NOTE: Keep selector properties in alphbetical order :)
 .carousel {
   background: $dark;
@@ -170,40 +174,36 @@ $opacity-hover: 0.5;
   }
 }
 
-.icon-arrow {
-  background-image: url(#{$asset-path}/icon-arrow.svg);
+.icon {
   background-repeat: no-repeat;
   background-size: contain;
   cursor: pointer;
-  height: 7rem;
+  filter: $drop-shadow;
   opacity: $opacity;
   position: absolute;
-  width: 7rem;
+  -webkit-tap-highlight-color: transparent;
   &:hover {
+    filter: $drop-shadow-hover;
     opacity: $opacity-hover;
   }
-  &.prev {
-    left: 0;
-    transform: scale(-1, 1);
+  &.arrow {
+    background-image: url(#{$asset-path}/icon-arrow.svg);
+    height: 7rem;
+    width: 7rem;
+    &.prev {
+      left: 0;
+      transform: scale(-1, 1);
+    }
+    &.next {
+      right: 0;
+    }
   }
-  &.next {
-    right: 0;
-  }
-}
-
-.icon-fullscreen {
-  background-image: url(#{$asset-path}/icon-fullscreen.svg);
-  background-repeat: no-repeat;
-  background-size: contain;
-  bottom: 1rem;
-  cursor: pointer;
-  height: 3rem;
-  opacity: $opacity;
-  position: absolute;
-  right: 1rem;
-  width: 3rem;
-  &:hover {
-    opacity: $opacity-hover;
+  &.fullscreen {
+    background-image: url(#{$asset-path}/icon-fullscreen.svg);
+    bottom: 1rem;
+    height: 3rem;
+    right: 1rem;
+    width: 3rem;
   }
 }
 

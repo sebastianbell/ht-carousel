@@ -142,7 +142,7 @@ export default {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
       const img = urlParams.get("img");
-      if (parseInt(img) && img >= 0 && img <= this.imagesLength + 1) {
+      if (parseInt(img) && img >= 0 && img <= this.imagesLength - 1) {
         this.mainImageUrl = this.imageUrls[img];
         this.imageIndex = img;
       }

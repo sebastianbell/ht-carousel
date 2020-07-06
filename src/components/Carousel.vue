@@ -61,7 +61,7 @@ export default {
         })
         .then(() => {
           this.getImageFromUrl();
-          this.scrollStrip();
+          this.updateStrip();
           this.keyboardShortcuts();
         })
         .catch((error) => {
@@ -71,7 +71,7 @@ export default {
     updateImage(event) {
       this.mainImageUrl = event.target.src;
       this.imageIndex = parseInt(event.target.getAttribute("data-index"));
-      this.scrollStrip();
+      this.updateStrip();
     },
     prevImage() {
       if (this.imageIndex > 0) {
@@ -81,7 +81,7 @@ export default {
         this.imageIndex = this.imagesLength - 1;
         this.mainImageUrl = this.imageUrls[this.imagesLength - 1];
       }
-      this.scrollStrip();
+      this.updateStrip();
     },
     nextImage() {
       if (this.imagesLength - 1 > this.imageIndex) {
@@ -91,9 +91,9 @@ export default {
         this.imageIndex = 0;
         this.mainImageUrl = this.imageUrls[0];
       }
-      this.scrollStrip();
+      this.updateStrip();
     },
-    scrollStrip() {
+    updateStrip() {
       const strip = document.querySelector(".carousel > .control-strip");
       const images = strip.querySelectorAll("img");
       const selected = strip.querySelector(
@@ -114,7 +114,7 @@ export default {
     toggleExpanded() {
       const container = document.querySelector(".carousel");
       container.classList.toggle("expanded-view");
-      this.scrollStrip();
+      this.updateStrip();
     },
     downloadImage() {
       // Using axios, see main.js.

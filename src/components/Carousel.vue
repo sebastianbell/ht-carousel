@@ -1,4 +1,5 @@
 <template>
+  <!-- Carousel: an image viewer that takes an array of image URLs, this component will dynamically scale to its parent container dimensions. -->
   <section class="carousel">
     <div class="main-image">
       <img :src="mainImageUrl" alt="Main Image" />
@@ -134,7 +135,7 @@ export default {
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
-      link.setAttribute("download", "image.jpg");
+      link.setAttribute("download", `image${this.imageIndex}.jpg`);
       document.body.appendChild(link);
       link.click();
     },
@@ -186,11 +187,9 @@ $drop-shadow-hover: drop-shadow(0 0 7px rgba(255, 255, 255, 0.9));
 // NOTE: Keep selector properties in alphbetical order :)
 .carousel {
   background: $dark;
-  display: flex;
-  flex-flow: column;
-  height: 100vh;
-  &.expanded-view .main-image img {
-    max-height: 100vh;
+  height: 100%;
+  &.expanded-view .main-image {
+    height: 100%;
   }
   &.expanded-view .control-strip {
     display: none;
@@ -200,12 +199,12 @@ $drop-shadow-hover: drop-shadow(0 0 7px rgba(255, 255, 255, 0.9));
 .main-image {
   align-items: center;
   display: flex;
-  flex: 1;
+  height: 80%;
   justify-content: center;
   position: relative;
   img {
     border: 1px solid black;
-    max-height: 80vh;
+    max-height: 100%;
   }
 }
 

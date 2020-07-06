@@ -3,6 +3,7 @@
 ## Notes
 
 - Using the Vue CLI framework w/ the carousel implemented as a self-contained component.
+- The component will dynamically scale to its parent container dimensions.
 - Added packages sass/sass-loader for SCSS support and axios for HTTP requests.
 - Loading images from provided mocky.io endpoint.
 - Previous and next buttons advance the carousel in either direction, the strip will "wrap around" when the end of the strip is reached.

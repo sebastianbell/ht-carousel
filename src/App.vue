@@ -52,4 +52,9 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+// App
+#app {
+  height: 100vh;
+}
 </style>

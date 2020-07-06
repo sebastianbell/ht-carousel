@@ -49,18 +49,6 @@ export default {
       imageIndex: 0,
     };
   },
-  mounted() {
-    // DOM ready.
-    document.onreadystatechange = () => {
-      if (document.readyState === "complete") {
-        this.keyboardShortcuts();
-      }
-    };
-    // Paged loaded.
-    window.addEventListener("load", () => {
-      this.getImageFromUrl();
-    });
-  },
   methods: {
     fetchImageUrls() {
       // Using axios, see main.js.
@@ -70,6 +58,11 @@ export default {
           this.imageUrls = result.data.images;
           this.imagesLength = this.imageUrls.length;
           this.mainImageUrl = result.data.images[0];
+        })
+        .then(() => {
+          this.getImageFromUrl();
+          this.scrollStrip();
+          this.keyboardShortcuts();
         })
         .catch((error) => {
           window.console.error(error);
@@ -120,7 +113,7 @@ export default {
     },
     toggleExpanded() {
       const container = document.querySelector(".carousel");
-      container.classList.toggle("strip-hide");
+      container.classList.toggle("expanded-view");
       this.scrollStrip();
     },
     downloadImage() {
@@ -153,7 +146,6 @@ export default {
         this.mainImageUrl = this.imageUrls[img];
         this.imageIndex = img;
       }
-      this.scrollStrip();
     },
     keyboardShortcuts() {
       // Arrow keys.
@@ -197,10 +189,10 @@ $drop-shadow-hover: drop-shadow(0 0 7px rgba(255, 255, 255, 0.9));
   display: flex;
   flex-flow: column;
   height: 100vh;
-  &.strip-hide .main-image img {
+  &.expanded-view .main-image img {
     max-height: 100vh;
   }
-  &.strip-hide .control-strip {
+  &.expanded-view .control-strip {
     display: none;
   }
 }

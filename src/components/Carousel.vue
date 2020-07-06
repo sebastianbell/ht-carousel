@@ -15,7 +15,7 @@
         v-on:click="toggleExpanded"
       ></div>
     </div>
-    <div class="control-strip strip-init">
+    <div class="control-strip">
       <img
         v-for="(url, index) in imageUrls"
         :src="url"
@@ -50,12 +50,16 @@ export default {
     };
   },
   mounted() {
+    // DOM ready.
     document.onreadystatechange = () => {
       if (document.readyState === "complete") {
-        // DOM ready.
         this.keyboardShortcuts();
       }
     };
+    // Paged loaded.
+    window.addEventListener("load", () => {
+      this.getImageFromUrl();
+    });
   },
   methods: {
     fetchImageUrls() {
@@ -102,9 +106,6 @@ export default {
       const selected = strip.querySelector(
         `img[data-index='${this.imageIndex}']`
       );
-
-      // Remove the intial placeholder image border.
-      strip.classList.remove("strip-init");
       // Remove all image borders.
       images.forEach((element) => {
         element.classList.remove("strip-selected");
@@ -143,6 +144,16 @@ export default {
       link.setAttribute("download", "image.jpg");
       document.body.appendChild(link);
       link.click();
+    },
+    getImageFromUrl() {
+      const queryString = window.location.search;
+      const urlParams = new URLSearchParams(queryString);
+      const img = urlParams.get("img");
+      if (parseInt(img) && img >= 0 && img <= this.imagesLength + 1) {
+        this.mainImageUrl = this.imageUrls[img];
+        this.imageIndex = img;
+      }
+      this.scrollStrip();
     },
     keyboardShortcuts() {
       // Arrow keys.
@@ -261,9 +272,6 @@ $drop-shadow-hover: drop-shadow(0 0 7px rgba(255, 255, 255, 0.9));
     &.strip-selected {
       border-color: $light;
     }
-  }
-  &.strip-init > img:first-child {
-    border-color: $light;
   }
 }
 </style>

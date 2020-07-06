@@ -149,7 +149,6 @@ export default {
       }
     },
     keyboardShortcuts() {
-      // Arrow keys.
       document.addEventListener("keydown", (event) => {
         switch (event.key) {
           case "ArrowLeft":

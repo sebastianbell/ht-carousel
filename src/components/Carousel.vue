@@ -61,7 +61,7 @@ export default {
           this.mainImageUrl = result.data.images[0];
         })
         .then(() => {
-          this.getImageFromUrl();
+          this.getImgFromQueryString();
           this.updateStrip();
           this.keyboardShortcuts();
         })
@@ -139,7 +139,7 @@ export default {
       document.body.appendChild(link);
       link.click();
     },
-    getImageFromUrl() {
+    getImgFromQueryString() {
       const queryString = window.location.search;
       const urlParams = new URLSearchParams(queryString);
       const img = urlParams.get("img");

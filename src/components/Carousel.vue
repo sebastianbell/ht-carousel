@@ -80,7 +80,7 @@ export default {
         this.mainImageUrl = this.imageUrls[this.imageIndex];
       } else {
         this.imageIndex = this.imagesLength - 1;
-        this.mainImageUrl = this.imageUrls[this.imagesLength - 1];
+        this.mainImageUrl = this.imageUrls[this.imageIndex];
       }
       this.updateStrip();
     },
@@ -90,7 +90,7 @@ export default {
         this.mainImageUrl = this.imageUrls[this.imageIndex];
       } else {
         this.imageIndex = 0;
-        this.mainImageUrl = this.imageUrls[0];
+        this.mainImageUrl = this.imageUrls[this.imageIndex];
       }
       this.updateStrip();
     },

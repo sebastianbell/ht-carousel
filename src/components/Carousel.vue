@@ -1,7 +1,7 @@
 <template>
   <!-- Carousel: an image viewer that takes an array of image URLs, this component will dynamically scale to its parent container dimensions. -->
   <section class="carousel">
-    <div class="main-image">
+    <div class="main-image-container">
       <img :src="mainImageUrl" alt="Main Image" />
       <div class="icon arrow prev" v-on:click="prevImage"></div>
       <div class="icon arrow next" v-on:click="nextImage"></div>
@@ -188,7 +188,7 @@ $drop-shadow-hover: drop-shadow(0 0 7px rgba(255, 255, 255, 0.9));
 .carousel {
   background: $dark;
   height: 100%;
-  &.expanded-view .main-image {
+  &.expanded-view .main-image-container {
     height: 100%;
   }
   &.expanded-view .control-strip {
@@ -196,7 +196,7 @@ $drop-shadow-hover: drop-shadow(0 0 7px rgba(255, 255, 255, 0.9));
   }
 }
 
-.main-image {
+.main-image-container {
   align-items: center;
   display: flex;
   height: 80%;

@@ -68,7 +68,6 @@ export default {
         })
         .then(() => {
           this.getImgFromQueryString();
-          this.updateStrip();
           this.keyboardShortcuts();
         })
         .catch((error) => {
@@ -78,7 +77,6 @@ export default {
     updateImage(index) {
       this.mainImageUrl = this.imageUrls[index];
       this.imageIndex = index;
-      this.updateStrip();
     },
     prevImage() {
       if (this.imageIndex > 0) {
@@ -88,7 +86,6 @@ export default {
         this.imageIndex = this.imagesLength - 1;
         this.mainImageUrl = this.imageUrls[this.imageIndex];
       }
-      this.updateStrip();
     },
     nextImage() {
       if (this.imagesLength - 1 > this.imageIndex) {
@@ -98,7 +95,6 @@ export default {
         this.imageIndex = 0;
         this.mainImageUrl = this.imageUrls[this.imageIndex];
       }
-      this.updateStrip();
     },
     updateStrip() {
       const strip = document.querySelector(".carousel > .control-strip");
@@ -120,12 +116,6 @@ export default {
     },
     toggleExpanded() {
       this.showControlStrip = !this.showControlStrip;
-      if (this.showControlStrip) {
-        // setTimeout to allow binded classes to update before updating control strip scroll position.
-        setTimeout(() => {
-          this.updateStrip();
-        }, 100);
-      }
     },
     downloadImage() {
       // Using axios, see main.js.
@@ -173,6 +163,9 @@ export default {
         }
       });
     },
+  },
+  updated() {
+    this.updateStrip();
   },
 };
 </script>

@@ -1,6 +1,6 @@
 <template>
   <!-- Carousel: an image viewer that takes an array of image URLs, this component will dynamically scale to its parent container dimensions. -->
-  <section class="carousel">
+  <section class="carousel" :class="[showControlStrip ? 'expanded-view' : '']">
     <div class="main-image-container">
       <img :src="mainImageUrl" alt="Main Image" />
       <div class="icon arrow prev" v-on:click="prevImage"></div>
@@ -8,12 +8,12 @@
       <div
         class="icon download"
         title="Download Image"
-        v-on:click="downloadImage"
+        @click="downloadImage"
       ></div>
       <div
         class="icon expanded"
         title="Expand View"
-        v-on:click="toggleExpanded"
+        @click="toggleExpanded"
       ></div>
     </div>
     <div class="control-strip">
@@ -22,8 +22,8 @@
         :src="url"
         :key="url"
         :data-index="index"
-        v-on:click="updateImage"
         alt="Thumbnail Image"
+        @click="updateImage(index)"
       />
     </div>
   </section>
@@ -44,11 +44,17 @@ export default {
   data() {
     this.fetchImageUrls();
     return {
+      showControlStrip: false,
       imageUrls: carouselConfig.placeholderImageUrls,
       imagesLength: carouselConfig.placeholderImageUrls.length,
       mainImageUrl: carouselConfig.placeholderImageUrls[0],
       imageIndex: 0,
     };
+  },
+  computed: {
+    carouselClasses() {
+      return [{ "expanded-view": !this.showControlStrip }, "carousel"];
+    },
   },
   methods: {
     fetchImageUrls() {
@@ -69,9 +75,9 @@ export default {
           window.console.error(error);
         });
     },
-    updateImage(event) {
-      this.mainImageUrl = event.target.src;
-      this.imageIndex = parseInt(event.target.getAttribute("data-index"));
+    updateImage(index) {
+      this.mainImageUrl = this.imageUrls[index];
+      this.imageIndex = index;
       this.updateStrip();
     },
     prevImage() {
@@ -95,6 +101,7 @@ export default {
       this.updateStrip();
     },
     updateStrip() {
+      // console.log(this.imageIndex);
       const strip = document.querySelector(".carousel > .control-strip");
       const images = strip.querySelectorAll("img");
       const selected = strip.querySelector(
@@ -113,8 +120,7 @@ export default {
       });
     },
     toggleExpanded() {
-      const container = document.querySelector(".carousel");
-      container.classList.toggle("expanded-view");
+      this.showControlStrip = !this.showControlStrip;
       this.updateStrip();
     },
     downloadImage() {

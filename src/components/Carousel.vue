@@ -101,7 +101,6 @@ export default {
       this.updateStrip();
     },
     updateStrip() {
-      // console.log(this.imageIndex);
       const strip = document.querySelector(".carousel > .control-strip");
       const images = strip.querySelectorAll("img");
       const selected = strip.querySelector(
@@ -121,7 +120,12 @@ export default {
     },
     toggleExpanded() {
       this.showControlStrip = !this.showControlStrip;
-      this.updateStrip();
+      if (this.showControlStrip) {
+        // setTimeout to allow binded classes to update before updating control strip scroll position.
+        setTimeout(() => {
+          this.updateStrip();
+        }, 100);
+      }
     },
     downloadImage() {
       // Using axios, see main.js.
@@ -168,13 +172,6 @@ export default {
             break;
         }
       });
-    },
-  },
-  watch: {
-    showControlStrip(newValue) {
-      if (newValue) {
-        // call method to scroll to correct thumbnail
-      }
     },
   },
 };

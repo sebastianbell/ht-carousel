@@ -51,6 +51,9 @@ export default {
       imageIndex: 0,
     };
   },
+  updated() {
+    this.updateStrip();
+  },
   computed: {
     carouselClasses() {
       return [{ "expanded-view": !this.showControlStrip }, "carousel"];
@@ -163,9 +166,6 @@ export default {
         }
       });
     },
-  },
-  updated() {
-    this.updateStrip();
   },
 };
 </script>

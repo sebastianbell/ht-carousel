@@ -1,6 +1,6 @@
 <template>
   <!-- Carousel: an image viewer that takes an array of image URLs, this component will dynamically scale to its parent container dimensions. -->
-  <section class="carousel" :class="[showControlStrip ? 'expanded-view' : '']">
+  <section class="carousel" :class="carouselClasses">
     <div class="main-image-container">
       <img :src="mainImageUrl" alt="Main Image" />
       <div class="icon arrow prev" v-on:click="prevImage"></div>
@@ -44,7 +44,7 @@ export default {
   data() {
     this.fetchImageUrls();
     return {
-      showControlStrip: false,
+      showControlStrip: true,
       imageUrls: carouselConfig.placeholderImageUrls,
       imagesLength: carouselConfig.placeholderImageUrls.length,
       mainImageUrl: carouselConfig.placeholderImageUrls[0],
@@ -168,6 +168,13 @@ export default {
             break;
         }
       });
+    },
+  },
+  watch: {
+    showControlStrip(newValue) {
+      if (newValue) {
+        // call method to scroll to correct thumbnail
+      }
     },
   },
 };

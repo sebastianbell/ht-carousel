@@ -1,6 +1,6 @@
 <template>
   <!-- Carousel: an image viewer that takes an array of image URLs, this component will dynamically scale to its parent container dimensions. -->
-  <section class="carousel" :class="carouselClasses">
+  <section :class="carouselClasses">
     <div class="main-image-container">
       <img :src="mainImageUrl" alt="Main Image" />
       <div class="icon arrow prev" v-on:click="prevImage"></div>

@@ -52,7 +52,7 @@ export default {
     };
   },
   updated() {
-    this.updateStrip();
+    if (this.showControlStrip === true) this.updateStrip();
   },
   computed: {
     carouselClasses() {

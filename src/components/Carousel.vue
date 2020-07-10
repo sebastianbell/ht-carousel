@@ -3,8 +3,8 @@
   <section :class="carouselClasses">
     <div class="main-image-container">
       <img :src="mainImageUrl" alt="Main Image" />
-      <div class="icon arrow prev" v-on:click="prevImage"></div>
-      <div class="icon arrow next" v-on:click="nextImage"></div>
+      <div class="icon arrow prev" @click="prevImage"></div>
+      <div class="icon arrow next" @click="nextImage"></div>
       <div
         class="icon download"
         title="Download Image"
